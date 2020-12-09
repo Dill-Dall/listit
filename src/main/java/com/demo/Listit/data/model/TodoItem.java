@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Builder
 @Data
@@ -23,8 +24,8 @@ public class TodoItem {
 
     private String textField;
 
-    @Enumerated(EnumType.ORDINAL)
-    private CategoryEnum categoryEnum = CategoryEnum.NON;
+    @ElementCollection
+    private Set<CategoryEnum> categories;
 
     @JoinColumn(name = "todo_list_id", nullable = false)
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -34,13 +35,13 @@ public class TodoItem {
 
     /**
      * Creating this non overiding Equal mehthod, to check for equality in selected values. not including Id.
+     *
      * @return boolean
      */
-    public boolean isEqual(TodoItem todoItem){
+    public boolean isEqual(TodoItem todoItem) {
         return textField.equals(todoItem.textField)
-                && categoryEnum.equals(todoItem.categoryEnum);
+                && categories.equals(todoItem.categories);
     }
-
 
 
 }

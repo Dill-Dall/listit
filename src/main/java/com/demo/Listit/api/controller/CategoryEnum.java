@@ -11,6 +11,7 @@ public enum CategoryEnum {
     NON("");
 
     private final String stringValue;
+
     CategoryEnum(String stringValue) {
         this.stringValue = stringValue;
     }

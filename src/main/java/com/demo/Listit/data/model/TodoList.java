@@ -25,11 +25,11 @@ public class TodoList {
     @OneToMany(targetEntity = TodoItem.class)
     private List<TodoItem> todoItems;
 
-    public void addNewTodoItem(TodoItem todoItem){
+    public void addNewTodoItem(TodoItem todoItem) {
         todoItems.add(todoItem);
     }
 
-    public void deleteTodoItem(TodoItem todoItem){
+    public void deleteTodoItem(TodoItem todoItem) {
         todoItems.remove(todoItem);
     }
 

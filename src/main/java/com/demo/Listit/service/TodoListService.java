@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.Optional;
 
+/**
+ * Handles both TodoItem and TodoList services
+ */
 @Service
 public class TodoListService implements ITodoListService {
 

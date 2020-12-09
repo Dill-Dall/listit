@@ -23,41 +23,41 @@ public class ListItRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createNewList(String name){
-        Long idOfNewList = service.createNewTodoList(name);
+    public ResponseEntity<Long> createNewList(String title) {
+        Long idOfNewList = service.createNewTodoList(title);
         return new ResponseEntity<>(idOfNewList, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/item")
-    public  ResponseEntity<Object> createNewListItem(TodoItemRequestModel listItem){
+    public ResponseEntity<Object> createNewListItem(TodoItemRequestModel listItem) {
         try {
             Long idOfNewItem = service.addNewListItemToTodoList(listItem);
             return new ResponseEntity<>(idOfNewItem, HttpStatus.CREATED);
         } catch (TodoListException e) {
-            return new ResponseEntity<>("Might be listid is false or duplikate object",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Might be listid is false or duplikate object", HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping(path = "/item")
-    public ResponseEntity<String> deleteListItem(@RequestParam("listitemvalue") int listItemId){
+    public ResponseEntity<String> deleteListItem(@RequestParam("listitemvalue") int listItemId) {
         service.deleteTodoItem(listItemId);
         return ResponseEntity.ok("Listitem deleted successfullly");
     }
 
     @GetMapping
-    public ResponseEntity<TodoListResponseModel> getList(@RequestParam("Listid") int id){
+    public ResponseEntity<TodoListResponseModel> getList(@RequestParam("Listid") int id) {
         Optional<TodoListResponseModel> responseModel = service.getList(id);
         return responseModel.map(todoListResponseModel -> new ResponseEntity<>(todoListResponseModel, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(path = "/filtered")
-    public ResponseEntity<TodoListResponseModel> getList(@RequestParam("Listid") int id, @RequestParam("category") CategoryEnum categoryEnum){
+    public ResponseEntity<TodoListResponseModel> getList(@RequestParam("Listid") int id,
+                                                         @RequestParam("category") CategoryEnum categoryEnum) {
         Optional<TodoListResponseModel> responseModel = service.getFilteredList(id, categoryEnum);
         return responseModel.map(todoListResponseModel -> new ResponseEntity<>(todoListResponseModel, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
 
 
 }

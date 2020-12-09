@@ -9,6 +9,7 @@ import com.demo.Listit.data.model.TodoList;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class TodoFactory {
 
     public Optional<TodoListResponseModel> createOptionalListResponseModel(Optional<TodoList> optionalListItList) {
-        if(optionalListItList.isPresent()){
+        if (optionalListItList.isPresent()) {
             TodoList todoList = optionalListItList.get();
             List<TodoItem> listItItemList = todoList.getTodoItems();
             return getTodoListResponseModel(todoList, listItItemList);
@@ -28,16 +29,17 @@ public class TodoFactory {
     public TodoItem createTodoItem(TodoItemRequestModel listItem) {
         return TodoItem.builder()
                 .textField(listItem.getTextField())
-                .categoryEnum(listItem.getCategory() != null ? listItem.getCategory() : CategoryEnum.NON)
+                .categories(new HashSet<>(listItem.getCategory()))
                 .build();
     }
 
     public Optional<TodoListResponseModel> createListWithItemsFilteredOnCategory(Optional<TodoList> optionalListItList,
                                                                                  CategoryEnum categoryEnum) {
-        if(optionalListItList.isPresent()){
+        if (optionalListItList.isPresent()) {
             TodoList todoList = optionalListItList.get();
             List<TodoItem> listItItemList = todoList.getTodoItems().stream()
-                    .filter(item -> item.getCategoryEnum().equals(categoryEnum)).collect(Collectors.toList());
+                    .filter(item -> item.getCategories().contains(categoryEnum)).collect(Collectors.toList());
+
             return getTodoListResponseModel(todoList, listItItemList);
         }
         return Optional.empty();
@@ -48,7 +50,7 @@ public class TodoFactory {
         List<TodoItemResponseModel> todoItemResponseModels = listItItemList.stream()
                 .map(it -> TodoItemResponseModel.builder()
                         .id(it.getId())
-                        .category(it.getCategoryEnum())
+                        .categories(new ArrayList<>(it.getCategories()))
                         .textField(it.getTextField())
                         .build())
                 .collect(Collectors.toList());
@@ -61,6 +63,6 @@ public class TodoFactory {
     }
 
     public boolean compareForDuplicates(TodoList todoList, TodoItem todoItem) {
-            return todoList.getTodoItems().stream().anyMatch(it -> it.isEqual(todoItem));
+        return todoList.getTodoItems().stream().anyMatch(it -> it.isEqual(todoItem));
     }
 }
