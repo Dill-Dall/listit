@@ -17,7 +17,7 @@ import java.util.Optional;
  * Handles both TodoItem and TodoList services
  */
 @Service
-public class TodoListService implements ITodoListService {
+public class TodoListService {
 
     TodoListRepository todoListRepository;
     TodoItemRepository todoItemRepository;
@@ -30,31 +30,28 @@ public class TodoListService implements ITodoListService {
         this.todoFactory = todoFactory;
     }
 
-    @Override
     public Long createNewTodoList(String title) {
         TodoList newListIt = TodoList.builder().title(title).build();
         TodoList todoList = todoListRepository.save(newListIt);
         return todoList.getId();
     }
 
-    @Override
     public Long addNewListItemToTodoList(TodoItemRequestModel listItem) throws TodoListException {
         TodoItem newTodoItem = todoFactory.createTodoItem(listItem);
         Optional<TodoList> optTodoList = todoListRepository.findById(listItem.getListId());
-        if(optTodoList.isPresent()) {
+        if (optTodoList.isPresent()) {
             TodoList todoList = optTodoList.get();
 
-            if (todoFactory.compareForDuplicates(todoList, newTodoItem)) {
+            if (todoFactory.compareForDuplicates(todoList.getTodoItems(), newTodoItem)) {
                 throw new TodoListException("Could not add listItem to list. Identical item already exists");
             }
             TodoItem todoItem = saveNewTodoItemToRepos(newTodoItem, todoList);
             return todoItem.getId();
-            }
+        }
 
         throw new TodoListException("Could not add listItem to list. Does the List which you want to add to exist?");
     }
 
-    @Override
     public void deleteTodoItem(long listItemId) {
         Optional<TodoItem> todoItemOptional = todoItemRepository.findById(listItemId);
         if (todoItemOptional.isPresent()) {
@@ -66,23 +63,21 @@ public class TodoListService implements ITodoListService {
         }
     }
 
-    @Override
     public Optional<TodoListResponseModel> getList(long id) {
         Optional<TodoList> optionalListItList = todoListRepository.findById(id);
         return todoFactory.createOptionalListResponseModel(optionalListItList);
     }
 
-    @Override
     public Optional<TodoListResponseModel> getFilteredList(long id, CategoryEnum categoryEnum) {
         Optional<TodoList> optionalListItList = todoListRepository.findById(id);
         return todoFactory.createListWithItemsFilteredOnCategory(optionalListItList, categoryEnum);
     }
 
     private TodoItem saveNewTodoItemToRepos(TodoItem newTodoItem, TodoList todoList) {
-            todoList.addNewTodoItem(newTodoItem);
-            newTodoItem.setTodoList(todoList);
-            TodoItem todoItem = todoItemRepository.save(newTodoItem);
-            todoListRepository.save(todoList);
-            return todoItem;
+        todoList.addNewTodoItem(newTodoItem);
+        newTodoItem.setTodoList(todoList);
+        TodoItem todoItem = todoItemRepository.save(newTodoItem);
+        todoListRepository.save(todoList);
+        return todoItem;
     }
 }

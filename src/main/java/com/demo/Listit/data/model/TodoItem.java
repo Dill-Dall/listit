@@ -22,7 +22,7 @@ public class TodoItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String textField;
+    private String textField  ="";
 
     @ElementCollection
     private Set<CategoryEnum> categories;
@@ -42,6 +42,5 @@ public class TodoItem {
         return textField.equals(todoItem.textField)
                 && categories.equals(todoItem.categories);
     }
-
 
 }
