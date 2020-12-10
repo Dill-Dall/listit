@@ -1,0 +1,330 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api Documentation",
+    "version": "1.0",
+    "title": "Api Documentation",
+    "termsOfService": "urn:tos",
+    "contact": {},
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "basic-error-controller",
+      "description": "Basic Error Controller"
+    },
+    {
+      "name": "list-it-rest-controller",
+      "description": "List It Rest Controller"
+    }
+  ],
+  "paths": {
+    "/todolist": {
+      "get": {
+        "tags": [
+          "list-it-rest-controller"
+        ],
+        "summary": "getList",
+        "operationId": "getListUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "Listid",
+            "in": "query",
+            "description": "Listid",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TodoListResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "list-it-rest-controller"
+        ],
+        "summary": "createNewList",
+        "operationId": "createNewListUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "title",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/todolist/filtered": {
+      "get": {
+        "tags": [
+          "list-it-rest-controller"
+        ],
+        "summary": "getList",
+        "operationId": "getListUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "category",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "NON",
+              "OTHER",
+              "SHOPPING",
+              "WORK"
+            ]
+          },
+          {
+            "name": "Listid",
+            "in": "query",
+            "description": "Listid",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TodoListResponseModel"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/todolist/item": {
+      "post": {
+        "tags": [
+          "list-it-rest-controller"
+        ],
+        "summary": "createNewListItem",
+        "operationId": "createNewListItemUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ADMIN",
+                "NON",
+                "OTHER",
+                "SHOPPING",
+                "WORK"
+              ]
+            },
+            "collectionFormat": "multi",
+            "enum": [
+              "ADMIN",
+              "NON",
+              "OTHER",
+              "SHOPPING",
+              "WORK"
+            ]
+          },
+          {
+            "name": "listId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "textField",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "list-it-rest-controller"
+        ],
+        "summary": "deleteListItem",
+        "operationId": "deleteListItemUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "listitemvalue",
+            "in": "query",
+            "description": "listitemvalue",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "TodoItemResponseModel": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "NON",
+              "OTHER",
+              "SHOPPING",
+              "WORK"
+            ]
+          }
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "textField": {
+          "type": "string"
+        }
+      },
+      "title": "TodoItemResponseModel"
+    },
+    "TodoListResponseModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "listItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TodoItemResponseModel"
+          }
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "TodoListResponseModel"
+    },
+    "View": {
+      "type": "object",
+      "properties": {
+        "contentType": {
+          "type": "string"
+        }
+      },
+      "title": "View"
+    }
+  }
+}

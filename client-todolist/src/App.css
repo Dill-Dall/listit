@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.categories {
+  display: flex;
+  color: rgba(0, 153, 255, 0.739);
+}
+ .header{
+  display: flex;
+  gap: 500px;
+  color: green;
+  font-weight: bold;
+ }

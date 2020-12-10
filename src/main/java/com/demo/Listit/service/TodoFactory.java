@@ -62,7 +62,7 @@ public class TodoFactory {
                 .build());
     }
 
-    public boolean compareForDuplicates(TodoList todoList, TodoItem todoItem) {
-        return todoList.getTodoItems().stream().anyMatch(it -> it.isEqual(todoItem));
+    public boolean compareForDuplicates(List<TodoItem> todoList, TodoItem todoItem) {
+        return todoList.stream().anyMatch(it -> it.isEqual(todoItem));
     }
 }
