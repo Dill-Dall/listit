@@ -15,6 +15,7 @@ _ Unitesting for every logical expression.
 - Frontend add validation check
 
 ##Other
+
 Better documentation for API. Extracting the api to its own module, defined by swagger.yaml.
 
 Docker-compose. Postrgsql, NPM and Spring app in a single compose.
