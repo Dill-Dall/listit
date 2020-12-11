@@ -43,9 +43,9 @@ class App extends Component {
   }
 
   async handleChange(event) {
-    await this.setState({ chosencatagory: event.target.value });
-    console.log(this.state.todolist.listItems.filter(it => it.categories.includes("ADMIN")))
-    if (this.state.chosencatagory == '-') {
+    await this.setState({ chosencatagory: this.state.categories[event.target.value] });
+
+    if (this.state.chosencatagory === '-') {
       this.setState({ filteredlist: this.state.todolist.listItems });
     } else {
       this.setState({ filteredlist: this.state.todolist.listItems.filter(it => it.categories.includes(this.state.chosencatagory)) });
@@ -64,6 +64,11 @@ class App extends Component {
     return (
       <div className="container">
         <h1>#{this.state.todolist.id} {this.state.todolist.title}</h1>
+        <select multiple={true} value={this.state.vachosencategorieslues} onChange={this.handleChange}>
+          {this.state.categories.map((item, index) =>
+              <option value={index} key={index}>{item}</option>
+          )}
+        </select>
         <div className="header">
           <p>Title</p>
           <p>Categories</p>
@@ -75,8 +80,6 @@ class App extends Component {
               className="list-group-item d-flex justify-content-between align-items-center"
             >
               <tr>{todo.id}  {todo.textField}</tr>  <tr><span className="categories">{todo.categories.join('   :   ')}</span></tr>
-
-
               <DeleteButton itemId={todo.id} />
             </li>
           </ul>
